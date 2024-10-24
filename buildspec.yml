@@ -3,25 +3,29 @@ version: 0.2
 phases:
   install:
     runtime-versions:
-      python: 3.8  # Specify your Python version here
+      python: 3.8 # Specify your Python version
     commands:
       - echo Installing dependencies...
+      - pip install --upgrade pip  # Upgrade pip to the latest version
       - pip install -r requirements.txt  # Install dependencies from requirements.txt
+
   pre_build:
     commands:
-      - echo Pre-build phase
-      - echo Running any pre-build commands...
-      # Add any pre-build commands, such as linting or tests, if necessary
+      - echo Running pre-build steps...
+
   build:
     commands:
-      - echo Build phase
-      - python app.py  # This is where your app runs or where you compile the project
+      - echo Build started on `date`
+      - python -m unittest discover  # Run tests (optional)
+
   post_build:
     commands:
-      - echo Post-build phase
-      - echo Running any post-build commands...
+      - echo Build completed on `date`
 
 artifacts:
   files:
-    - '**/*'  # Include all files (adjust as needed)
-  discard-paths: yes
+    - '**/*'  # Include all files generated during the build
+
+cache:
+  paths:
+    - '/root/.cache/pip'  # Cache pip dependencies
